@@ -94,16 +94,27 @@ export async function POST(request: Request) {
                 reasoning,
               });
 
+              // Check if the response contains transaction details
+              let transactionDetails;
+              try {
+                const lastMessage = response.messages[response.messages.length - 1];
+                const content = JSON.parse(lastMessage.content);
+                if (content.transaction_data) {
+                  transactionDetails = content;
+                }
+              } catch (e) {
+                // Not a JSON message or doesn't contain transaction data
+              }
+
               await saveMessages({
-                messages: sanitizedResponseMessages.map((message) => {
-                  return {
-                    id: message.id,
-                    chatId: id,
-                    role: message.role,
-                    content: message.content,
-                    createdAt: new Date(),
-                  };
-                }),
+                messages: sanitizedResponseMessages.map((message) => ({
+                  id: message.id,
+                  chatId: id,
+                  role: message.role,
+                  content: message.content,
+                  createdAt: new Date(),
+                  transactionDetails: transactionDetails || null,
+                })),
               });
             } catch (error) {
               console.error('Failed to save chat');

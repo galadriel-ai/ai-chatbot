@@ -49,6 +49,7 @@ import {
 import type { Chat } from '@/lib/db/schema';
 import { fetcher } from '@/lib/utils';
 import { useChatVisibility } from '@/hooks/use-chat-visibility';
+import ConnectWalletButton from './ConnectWalletButton';
 
 type GroupedChats = {
   today: Chat[];
@@ -280,7 +281,10 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
   };
 
   return (
-    <>
+    <div className="flex flex-col flex-1 overflow-hidden">
+      <div className="p-4">
+        <ConnectWalletButton />
+      </div>
       <SidebarGroup>
         <SidebarGroupContent>
           <SidebarMenu>
@@ -412,6 +416,6 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </div>
   );
 }
