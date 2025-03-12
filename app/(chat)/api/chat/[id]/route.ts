@@ -3,7 +3,7 @@ import { getChatById } from '@/lib/db/queries';
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
   
