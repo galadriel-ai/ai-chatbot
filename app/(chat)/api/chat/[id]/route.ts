@@ -1,13 +1,11 @@
 import { auth } from '@/app/(auth)/auth';
 import { getChatById } from '@/lib/db/queries';
 
-// Using type assertion to bypass the type checking
-export const GET = (async (
-  req: Request,
-  context: any
-) => {
-  // Extract id from context
-  const id = context.params.id;
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
   
   const session = await auth();
   
@@ -31,4 +29,4 @@ export const GET = (async (
     console.error('Error fetching chat:', error);
     return new Response('Error fetching chat', { status: 500 });
   }
-}) as any;
+}
